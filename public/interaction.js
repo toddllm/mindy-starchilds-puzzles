@@ -1,57 +1,32 @@
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.130.0/build/three.module.js';
+
 export class Interaction {
-  constructor(domElement, camera, puzzlePieces, earth) {
-    this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2();
-    this.draggedPiece = null;
-    this.snapThreshold = 0.5;
-
-    domElement.addEventListener('mousedown', this.onMouseDown.bind(this), false);
-    domElement.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    domElement.addEventListener('mouseup', this.onMouseUp.bind(this), false);
-
+  constructor(renderer, scene, camera) {
+    this.renderer = renderer;
+    this.scene = scene;
     this.camera = camera;
-    this.puzzlePieces = puzzlePieces;
-    this.earth = earth;
+
+    // Get the DOM element from the renderer
+    const domElement = this.renderer.domElement;
+
+    // Add event listeners for interaction
+    domElement.addEventListener('mousedown', this.onMouseDown.bind(this));
+    domElement.addEventListener('mousemove', this.onMouseMove.bind(this));
+    domElement.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
 
   onMouseDown(event) {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-    const intersects = this.raycaster.intersectObjects(this.puzzlePieces.map(piece => piece.mesh));
-    if (intersects.length > 0) {
-      this.draggedPiece = intersects[0].object;
-      // Start dragging the piece
-      // ...
-    }
+    // Handle mouse down event
+    console.log('Mouse down event:', event);
   }
 
   onMouseMove(event) {
-    if (this.draggedPiece) {
-      const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-      const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-      const mousePosition = new THREE.Vector3(mouseX, mouseY, 0.5);
-      mousePosition.unproject(this.camera);
-      this.draggedPiece.position.copy(mousePosition);
-    }
+    // Handle mouse move event
+    console.log('Mouse move event:', event);
   }
 
   onMouseUp(event) {
-    if (this.draggedPiece) {
-      // Stop dragging the piece and check if it snaps into place
-      this.checkCollision(this.draggedPiece);
-      this.draggedPiece = null;
-    }
-  }
-
-  checkCollision(piece) {
-    const piecePosition = piece.position;
-    const earthPosition = this.earth.mesh.position;
-    const distance = piecePosition.distanceTo(earthPosition);
-    if (distance < this.snapThreshold) {
-      piece.position.copy(earthPosition);
-      // Snap the piece into place
-      // ...
-    }
+    // Handle mouse up event
+    console.log('Mouse up event:', event);
   }
 }
