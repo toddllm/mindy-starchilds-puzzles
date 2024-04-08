@@ -46,10 +46,7 @@
         vertices[i + 2] = vertex.z;
       }
 
-      const pieceMaterial = new THREE.ShaderMaterial({
-        vertexShader: sphereMaterial.vertexShader,
-        fragmentShader: sphereMaterial.fragmentShader
-      });
+      const pieceMaterial = sphereMaterial.clone();
       const piece = new THREE.Mesh(pieceGeometry, pieceMaterial);
       piece.position.copy(position);
       piece.rotation.copy(rotation);
