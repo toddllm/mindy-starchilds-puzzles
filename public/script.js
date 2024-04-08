@@ -39,7 +39,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   // Rotate the Earth about its axis
-  earth.rotation.y += 0.001;
+  earth.rotation.y += 0.005;
+  // Update puzzle pieces' positions relative to the Earth
 
   renderer.render(scene, camera);
 }
